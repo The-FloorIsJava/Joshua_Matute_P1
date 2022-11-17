@@ -1,7 +1,7 @@
 package com.revature.employeereimbursementsystem.DAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
-import com.revature.employeereimbursementsystem.Util.Crudable;
+import com.revature.employeereimbursementsystem.Util.Interface.Crudable;
 
 import java.sql.Connection;
 import java.util.List;
@@ -23,7 +23,6 @@ public class EmployeeDAO implements Crudable<Employee> {
         } catch (Exception e){
 
         }
-
         return null;
     }
 

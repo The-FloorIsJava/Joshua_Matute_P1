@@ -1,4 +1,4 @@
-package com.revature.employeereimbursementsystem.Util;
+package com.revature.employeereimbursementsystem.Util.Interface;
 import com.revature.employeereimbursementsystem.Model.Employee;
 
 import java.util.List;
