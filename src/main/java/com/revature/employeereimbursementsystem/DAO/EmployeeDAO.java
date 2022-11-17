@@ -9,7 +9,7 @@ import java.util.List;
 
 /*
 
-    This is the DAO that speaks to the database
+    This is the DAO that speaks to the database.
 
  */
 public class EmployeeDAO implements Crudable<Employee> {
