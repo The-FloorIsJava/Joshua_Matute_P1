@@ -13,7 +13,7 @@ public class JavalinApp {
 
 
 
-        app.get("/hello", ctx -> ctx.html("Hello, Javalin!"));
+        app.get("/hello, this is a test", ctx -> ctx.html("Hello, Javalin!"));
 
     }
 }
