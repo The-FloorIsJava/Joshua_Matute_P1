@@ -4,6 +4,7 @@ import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
 import com.revature.employeereimbursementsystem.Util.Interface.Crudable;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
 
 
@@ -14,14 +15,26 @@ import java.util.List;
  */
 public class EmployeeDAO implements Crudable<Employee> {
     @Override
-    public Employee create(Employee newObject) {
+    public Employee create(Employee newEmployee) {
 
-        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection())
-        {
-            String sql = "insert into employee ()";
+        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
+            String sql = "insert into employee_id, employee_email, employee_isManager, employee_pwd) values (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        } catch (Exception e){
+            preparedStatement.setInt(1, newEmployee.getEmployeeID());
+            preparedStatement.setString(2, newEmployee.getEmployeeEmail());
+            preparedStatement.setBoolean(3, newEmployee.getisManager());
+            preparedStatement.setString(4, newEmployee.getPassword());
 
+            int checkInsert = preparedStatement.executeUpdate();
+
+            if (checkInsert == 0) {
+                throw new RuntimeException("Employee was not added to database");
+            }
+            return newEmployee;
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -46,7 +59,9 @@ public class EmployeeDAO implements Crudable<Employee> {
         return false;
     }
 
-    public Employee loginCheck(int employeeID, String password){
+    public Employee loginCheck(int employeeID, String password) {
+
         return null;
     }
 }
+

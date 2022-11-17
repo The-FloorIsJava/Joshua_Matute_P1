@@ -53,7 +53,7 @@ public class Employee {
         }
 
         //employeeRole getters & setters
-        public boolean isManager(){
+        public boolean getisManager(){
         return isManager;
         }
         public void setIsManager(){
