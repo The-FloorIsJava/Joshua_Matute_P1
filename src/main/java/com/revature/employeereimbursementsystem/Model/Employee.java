@@ -14,15 +14,17 @@ public class Employee {
     private String employeeRole;
     private String password;
 
+    private boolean isManager;
+
     public Employee() {
 
     }
 
-        public Employee(int employeeID, String employeeEmail, String employeeRole, String password)
+        public Employee(int employeeID, String employeeEmail, String password, boolean isManager)
         {
             this.employeeID = employeeID;
             this.employeeEmail = employeeEmail;
-            this.employeeRole = employeeRole;
+            this.isManager = isManager;
             this.password = password;
 
         }
@@ -51,11 +53,11 @@ public class Employee {
         }
 
         //employeeRole getters & setters
-        public String getEmployeeRole(){
-        return employeeRole;
+        public boolean isManager(){
+        return isManager;
         }
-        public void setEmployeeRole(){
-            this.employeeRole = employeeRole;
+        public void setIsManager(){
+            this.isManager = isManager;
         }
 
         //password getters & setters

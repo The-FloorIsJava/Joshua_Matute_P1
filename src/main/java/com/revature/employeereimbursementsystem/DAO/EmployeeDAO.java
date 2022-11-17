@@ -46,7 +46,7 @@ public class EmployeeDAO implements Crudable<Employee> {
         return false;
     }
 
-    public Employee loginCheck(String employeeUserName, String password){
+    public Employee loginCheck(int employeeID, String password){
         return null;
     }
 }
