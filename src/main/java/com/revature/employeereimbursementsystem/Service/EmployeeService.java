@@ -3,37 +3,42 @@ import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 
 import java.util.List;
-
+import java.util.ArrayList;
 
 public class EmployeeService {
 
     private Employee sessionEmployee = null;
     private final EmployeeDAO employeeDAO;
 
-    /*
-        EmployeeService public method is a constructor of the
-        private final EmployeeDAO method.
-    */
-    public EmployeeService(EmployeeDAO employeeDAO) {
+    public EmployeeService(EmployeeDAO employeeDAO){
         this.employeeDAO = employeeDAO;
     }
 
-    public Employee addEmployee(Employee employee){
+    public void login() {
+        sessionEmployee = null;
+    }
+
+    public void logout() {
+        sessionEmployee = null;
+    }
+
+    public Employee registerNewEmployee(Employee employee){
         return employeeDAO.create(employee);
     }
 
-    public Employee getEmployee(int employeeID){
+
+    public Employee getSpecificEmployee (int employeeID){
         return null;
-    }
-
-    public void removeEmployee(int employeeID){
-
     }
 
     public List<Employee> getAllEmployees(){
         return null;
     }
+    public Employee getSessionEmployee(){
+        return  sessionEmployee;
+    }
+
+    }
 
 
-    // code for reimbursement ticket requests starts below
-}
+

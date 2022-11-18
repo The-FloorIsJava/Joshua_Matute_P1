@@ -1,7 +1,12 @@
 package com.revature.employeereimbursementsystem.Controller;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
+import com.revature.employeereimbursementsystem.Model.Employee;
 import io.javalin.Javalin;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
+import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
+import javax.naming.Context;
 
 public class EmployeeController {
 
@@ -11,9 +16,16 @@ public class EmployeeController {
              employeeService = new EmployeeService(new EmployeeDAO());
             this.app = app;
         }
-    public void employeeEndpoint(){
+    public void employeeEndpoint() {
+        app.post("Hi", this::postEmployeeHandler);
 
+    }
 
+    private void postEmployeeHandler(Context context) throws JsonProcessingException {
+            ObjectMapper mapper = new ObjectMapper();
+            Employee employee = mapper.readValue(context.body(), Employee.class);
+            content.json(employee);
+    }
             /*
         app.[http verb]([url endpoint after localhost:8080], this::[handler method]);
         http verbs:
@@ -28,6 +40,6 @@ public class EmployeeController {
          */
 
 
-    }
+
 }
 
