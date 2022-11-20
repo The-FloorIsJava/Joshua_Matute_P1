@@ -10,22 +10,13 @@ import javax.naming.Context;
 
 public class EmployeeController {
 
-        EmployeeService employeeService;
-        Javalin app;
-        public EmployeeController(Javalin app){
-             employeeService = new EmployeeService(new EmployeeDAO());
-            this.app = app;
+        private final EmployeeService employeeService;
+
+        public EmployeeController(EmployeeService employeeService) {
+            this.employeeService = employeeService;
         }
-    public void employeeEndpoint() {
-        app.post("Hi", this::postEmployeeHandler);
 
-    }
 
-    private void postEmployeeHandler(Context context) throws JsonProcessingException {
-            ObjectMapper mapper = new ObjectMapper();
-            Employee employee = mapper.readValue(context.body(), Employee.class);
-            content.json(employee);
-    }
             /*
         app.[http verb]([url endpoint after localhost:8080], this::[handler method]);
         http verbs:

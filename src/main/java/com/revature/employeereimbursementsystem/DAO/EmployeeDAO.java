@@ -3,8 +3,8 @@ import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
 import com.revature.employeereimbursementsystem.Util.Interface.Crudable;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,6 +41,22 @@ public class EmployeeDAO implements Crudable<Employee> {
 
     @Override
     public List<Employee> findAll() {
+
+        try(Connection connection = ConnectionFactory.getConnectionFactory().getConnection()){
+            List<Employee> employees = new ArrayList<>();
+
+            String sql = "select * from employee";
+
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            while(resultSet.next()){
+
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
         return null;
     }
 

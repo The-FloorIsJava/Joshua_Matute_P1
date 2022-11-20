@@ -11,9 +11,7 @@ public class Employee {
 
     private int employeeID;
     private String employeeEmail;
-    private String employeeRole;
     private String password;
-
     private boolean isManager;
 
     public Employee() {
@@ -24,7 +22,7 @@ public class Employee {
         {
             this.employeeID = employeeID;
             this.employeeEmail = employeeEmail;
-            this.isManager = isManager;
+            this.isManager = false;
             this.password = password;
 
         }
@@ -40,7 +38,7 @@ public class Employee {
         public int getEmployeeID() {
         return employeeID;
         }
-        public void setEmployeeID(){
+        public void setEmployeeID(int employeeID){
         this.employeeID = employeeID;
         }
 
