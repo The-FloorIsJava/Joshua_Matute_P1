@@ -11,7 +11,7 @@ public class ReimbursementModel {
     private String status;
 
 
-    public ReimbursementModel(double ticketID, String requester, double amount, String requestType, String status){
+    public ReimbursementModel(double ticketID, double amount){
 
         this.ticketID = ticketID;
         this.requester = requester;
