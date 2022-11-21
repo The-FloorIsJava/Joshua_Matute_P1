@@ -2,7 +2,6 @@ package com.revature.employeereimbursementsystem.Model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 public class Employee {
 
@@ -13,7 +12,7 @@ public class Employee {
     information and to keep it in the same class.
     */
 
-    private int employeeID;
+    private int employee_id;
     private String employeeEmail;
     private boolean isManager;
     @JsonAlias(value = {"pass", "PaSSWorD"})
@@ -23,7 +22,7 @@ public class Employee {
 
         public Employee(int employeeID, String employeeEmail, String password, boolean isManager)
         {
-            this.employeeID = employeeID;
+            this.employee_id = employeeID;
             this.employeeEmail = employeeEmail;
             this.isManager = false;
             this.password = password;
@@ -38,18 +37,18 @@ public class Employee {
 
 
         //employeeID getters & setters
-        public int getEmployeeID() {
-        return employeeID;
+        public int getEmployee_id() {
+        return employee_id;
         }
-        public void setEmployeeID(int employeeID){
-        this.employeeID = employeeID;
+        public void setEmployee_id(int employee_id){
+        this.employee_id = employee_id;
         }
 
         //employeeEmail getters & setters
         public String getEmployeeEmail(){
         return employeeEmail;
         }
-        public void setEmployeeEmail(){
+        public void setEmployeeEmail(String employeeEmail){
         this.employeeEmail = employeeEmail;
         }
 
@@ -57,15 +56,16 @@ public class Employee {
         public boolean getisManager(){
         return isManager;
         }
-        public void setIsManager(){
-            this.isManager = isManager;
+        public void setIsManager(boolean aDefault){
+            if (isManager) this.isManager = true;
+            else this.isManager = false;
         }
 
         //password getters & setters
         public String getPassword(){
         return password;
         }
-        public void setPassword(){
+        public void setPassword(String employee_pwd){
             this.password = password;
         }
 

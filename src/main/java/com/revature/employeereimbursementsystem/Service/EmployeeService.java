@@ -13,8 +13,8 @@ public class EmployeeService {
         this.employeeDAO = employeeDAO;
     }
 
-    public void login(int employeeID, String password) {
-        sessionEmployee = employeeDAO.loginCheck(employeeID, password);
+    public void login(int employee_id, String password) {
+        sessionEmployee = employeeDAO.loginCheck(employee_id, password);
     }
 
     public void logout() {

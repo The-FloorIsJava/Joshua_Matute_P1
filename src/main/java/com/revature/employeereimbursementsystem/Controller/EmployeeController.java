@@ -20,15 +20,14 @@ public class EmployeeController {
         }
         public void employeeEndpoint() {
 
-        app.get("Greetings", this::greetingsHandler);
         app.post("employee", this::getAllPostEmployeeHandler);
-        app.get("employee/{employeeEmail}", this::getSpecificEmployeeHandler);
+        app.get("employee_email", this::getSpecificEmployeeHandler);
         app.post("login", this::loginHandler);
         app.delete("logout", this::logoutHandler);
         }
 
     private void logoutHandler(Context context) {
-            int employeeID = employeeService.getSessionEmployee().getEmployeeID();
+            int employeeID = employeeService.getSessionEmployee().getEmployee_id();
             employeeService.logout();
             context.json(employeeID + " has logged out");
     }
@@ -36,12 +35,12 @@ public class EmployeeController {
     private void loginHandler(Context context) throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();
             LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
-            employeeService.login(loginCreds.getEmployeeID(), loginCreds.getPassword());
+            employeeService.login(loginCreds.getEmployee_id(), loginCreds.getPassword());
             context.json("Successfully logged in.");
     }
 
     private void getSpecificEmployeeHandler(Context context) {
-            String employeeEmail = context.pathParam("employeeEmail");
+            String employeeEmail = context.pathParam("employee_email");
             Employee employee = employeeService.getSessionEmployee();
             context.json(employee);
     }
@@ -51,9 +50,6 @@ public class EmployeeController {
     }
 
 
-    private void greetingsHandler(Context context) {
-            context.result("Greetings");
-    }
 
 
 }

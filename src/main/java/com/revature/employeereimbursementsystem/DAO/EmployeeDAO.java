@@ -21,7 +21,7 @@ public class EmployeeDAO implements Crudable<Employee> {
             String sql = "insert into employee_id, employee_email, employee_isManager, employee_pwd) values (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, newEmployee.getEmployeeID());
+            preparedStatement.setInt(1, newEmployee.getEmployee_id());
             preparedStatement.setString(2, newEmployee.getEmployeeEmail());
             preparedStatement.setBoolean(3, newEmployee.getisManager());
             preparedStatement.setString(4, newEmployee.getPassword());
@@ -51,13 +51,23 @@ public class EmployeeDAO implements Crudable<Employee> {
             ResultSet resultSet = statement.executeQuery(sql);
 
             while(resultSet.next()){
-
+                employees.add(convertSqlInfoToEmployee(resultSet));
             }
 
         } catch (SQLException e){
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Employee convertSqlInfoToEmployee(ResultSet resultSet) throws SQLException {
+        Employee employee = new Employee();
+
+        employee.setEmployee_id(resultSet.getInt("employee_id"));
+        employee.setEmployeeEmail(resultSet.getString("employee_email"));
+        employee.setPassword(resultSet.getString("employee_pwd"));
+        employee.setIsManager(resultSet.getBoolean("default"));
+        return employee;
     }
 
     @Override
@@ -75,7 +85,7 @@ public class EmployeeDAO implements Crudable<Employee> {
         return false;
     }
 
-    public Employee loginCheck(int employeeID, String password) {
+    public Employee loginCheck(int employee_id, String password) {
 
         return null;
     }
