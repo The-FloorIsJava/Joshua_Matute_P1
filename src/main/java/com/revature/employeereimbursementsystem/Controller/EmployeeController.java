@@ -7,28 +7,32 @@ import io.javalin.Javalin;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
 import javax.naming.Context;
+import java.util.List;
 
 public class EmployeeController {
 
-        private final EmployeeService employeeService;
+        EmployeeService employeeService;
+        Javalin app;
+        public EmployeeController(Javalin app){
+            employeeService = new EmployeeService((new EmployeeDAO()));
+            this.app = app;
+        }
+        public void employeeEndpoint() {
 
-        public EmployeeController(EmployeeService employeeService) {
-            this.employeeService = employeeService;
+            app.get("hello", this::helloHandler);
+            app.post("employee", this::postEmployeeHandler);
         }
 
+        private void getSpecificEmployeeHandler(Context context) {
+            int employeeID = context.pathParam("employeeID");
+            Employee employee = employeeService.getSessionEmployee();
+            context.json(employee);
+        }
 
-            /*
-        app.[http verb]([url endpoint after localhost:8080], this::[handler method]);
-        http verbs:
-        get (retrieve some representations)
-        post (persist some representations that is contained within a body)
-        put (update a model representation)
-        patch (update a part of a representation)
-        delete (delete some representation)
-        url endpoint: ex, localhost:8080/endpoint
-        handler method: a method we write in this class which will be passed the Javalin context for us to use,
-        which can hold information about the web request that was made, and can also generate a response.
-         */
+        private void getAllEmployeeHandler(Context context){
+            List<Employee> allEmployees = employeeService.getAllEmployees();
+            context.json(allEmployess);
+        }
 
 
 

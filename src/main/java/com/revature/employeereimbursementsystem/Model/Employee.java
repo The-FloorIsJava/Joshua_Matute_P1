@@ -1,5 +1,9 @@
 package com.revature.employeereimbursementsystem.Model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 public class Employee {
 
     /*
@@ -11,12 +15,11 @@ public class Employee {
 
     private int employeeID;
     private String employeeEmail;
-    private String password;
     private boolean isManager;
-
-    public Employee() {
-
-    }
+    @JsonAlias(value = {"pass", "PaSSWorD"})
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+    public Employee() {}
 
         public Employee(int employeeID, String employeeEmail, String password, boolean isManager)
         {
