@@ -6,15 +6,17 @@ import java.util.List;
 
 public class EmployeeService {
 
-    private Employee sessionEmployee = null;
+
     private final EmployeeDAO employeeDAO;
+    private Employee sessionEmployee = null;
 
     public EmployeeService(EmployeeDAO employeeDAO){
         this.employeeDAO = employeeDAO;
     }
 
-    public void login(int employee_id, String password) {
+    public Employee login(int employee_id, String password) {
         sessionEmployee = employeeDAO.loginCheck(employee_id, password);
+        return this.sessionEmployee;
     }
 
     public void logout() {
@@ -31,7 +33,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployees(){
-        return null;
+        return employeeDAO.findAll();
     }
     public Employee getSessionEmployee(){
         return  sessionEmployee;
