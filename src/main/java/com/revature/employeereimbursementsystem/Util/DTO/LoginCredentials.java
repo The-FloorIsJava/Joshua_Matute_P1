@@ -8,7 +8,7 @@ public class LoginCredentials {
         private int employeeID;
         private String password;
 
-        public int employeeID() {
+        public int getEmployeeID() {
             return employeeID;
         }
 

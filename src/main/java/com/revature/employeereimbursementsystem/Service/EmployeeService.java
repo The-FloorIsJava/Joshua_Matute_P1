@@ -3,7 +3,6 @@ import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class EmployeeService {
 
@@ -14,8 +13,8 @@ public class EmployeeService {
         this.employeeDAO = employeeDAO;
     }
 
-    public void login() {
-        sessionEmployee = null;
+    public void login(int employeeID, String password) {
+        sessionEmployee = employeeDAO.loginCheck(employeeID, password);
     }
 
     public void logout() {
@@ -38,7 +37,8 @@ public class EmployeeService {
         return  sessionEmployee;
     }
 
-    }
+
+}
 
 
 

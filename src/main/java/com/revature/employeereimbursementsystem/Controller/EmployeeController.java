@@ -6,7 +6,8 @@ import com.revature.employeereimbursementsystem.Model.Employee;
 import io.javalin.Javalin;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
-import javax.naming.Context;
+import io.javalin.http.Context;
+
 import java.util.List;
 
 public class EmployeeController {
@@ -19,21 +20,40 @@ public class EmployeeController {
         }
         public void employeeEndpoint() {
 
-            app.get("hello", this::helloHandler);
-            app.post("employee", this::postEmployeeHandler);
+        app.get("Greetings", this::greetingsHandler);
+        app.post("employee", this::getAllPostEmployeeHandler);
+        app.get("employee/{employeeEmail}", this::getSpecificEmployeeHandler);
+        app.post("login", this::loginHandler);
+        app.delete("logout", this::logoutHandler);
         }
 
-        private void getSpecificEmployeeHandler(Context context) {
-            int employeeID = context.pathParam("employeeID");
+    private void logoutHandler(Context context) {
+            int employeeID = employeeService.getSessionEmployee().getEmployeeID();
+            employeeService.logout();
+            context.json(employeeID + " has logged out");
+    }
+
+    private void loginHandler(Context context) throws JsonProcessingException {
+            ObjectMapper mapper = new ObjectMapper();
+            LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
+            employeeService.login(loginCreds.getEmployeeID(), loginCreds.getPassword());
+            context.json("Successfully logged in.");
+    }
+
+    private void getSpecificEmployeeHandler(Context context) {
+            String employeeEmail = context.pathParam("employeeEmail");
             Employee employee = employeeService.getSessionEmployee();
             context.json(employee);
-        }
+    }
 
-        private void getAllEmployeeHandler(Context context){
+    private void getAllPostEmployeeHandler(Context context) {
             List<Employee> allEmployees = employeeService.getAllEmployees();
-            context.json(allEmployess);
-        }
+    }
 
+
+    private void greetingsHandler(Context context) {
+            context.result("Greetings");
+    }
 
 
 }
