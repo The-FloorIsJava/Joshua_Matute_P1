@@ -14,6 +14,9 @@ public interface Crudable<T> {
 
     //read
     List<T> findAll();
+
+    Employee findById(int employee_id);
+
     T findByID(int id);
 
     //update

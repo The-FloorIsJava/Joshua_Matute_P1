@@ -14,17 +14,17 @@ public class Employee {
 
     private int employee_id;
     private String employeeEmail;
-    private boolean isManager;
+    private boolean employee_role;
     @JsonAlias(value = {"pass", "PaSSWorD"})
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     public Employee() {}
 
-        public Employee(int employeeID, String employeeEmail, String password, boolean isManager)
+        public Employee(int employeeID, String employeeEmail, String password, boolean employee_role)
         {
             this.employee_id = employeeID;
             this.employeeEmail = employeeEmail;
-            this.isManager = false;
+            this.employee_role = false;
             this.password = password;
 
         }
@@ -53,12 +53,12 @@ public class Employee {
         }
 
         //employeeRole getters & setters
-        public boolean getisManager(){
-        return isManager;
+        public boolean employee_role(){
+        return employee_role;
         }
-        public void setIsManager(boolean aDefault){
-            if (isManager) this.isManager = true;
-            else this.isManager = false;
+        public void employee_role(boolean aDefault){
+            if (employee_role) this.employee_role = true;
+            else this.employee_role = false;
         }
 
         //password getters & setters

@@ -19,12 +19,14 @@ public class EmployeeDAO implements Crudable<Employee> {
     public Employee create(Employee newEmployee) {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
+
             String sql = "INSERT INTO employee (employee_id, employee_email, employee_isManager, employee_pwd) VALUES (?, ?, ?, ?)";
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, newEmployee.getEmployee_id());
             preparedStatement.setString(2, newEmployee.getEmployeeEmail());
-            preparedStatement.setBoolean(3, newEmployee.getisManager());
+            preparedStatement.setBoolean(3, newEmployee.employee_role());
             preparedStatement.setString(4, newEmployee.getPassword());
 
             int checkInsert = preparedStatement.executeUpdate();
@@ -36,37 +38,14 @@ public class EmployeeDAO implements Crudable<Employee> {
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
-    }
-
-
-    public Employee loginCheck(int employee_id, String password) throws InvalidEmployeeInputException {
-
-        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "SELECT * FROM employee WHERE employee_id = ? AND employee_pwd = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-            preparedStatement.setInt(1, employee_id);
-            preparedStatement.setString(2, password);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if(!resultSet.next()) {
-                throw new InvalidEmployeeInputException("Entered information for " + employee_id + "was incorrect. Try again.");
-            }
-                return convertSqlInfoToEmployee(resultSet);
-
-        } catch (SQLException e) {
-                throw new RuntimeException(e);
-        }
-
     }
 
     @Override
     public List<Employee> findAll() {
 
-        try(Connection connection = ConnectionFactory.getConnectionFactory().getConnection()){
+        try(Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
             List<Employee> employees = new ArrayList<>();
 
             String sql = "select * from employee";
@@ -74,24 +53,21 @@ public class EmployeeDAO implements Crudable<Employee> {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
 
-            while(resultSet.next()){
+            while(resultSet.next()) {
                 employees.add(convertSqlInfoToEmployee(resultSet));
             }
 
-        } catch (SQLException e){
+            return employees;
+
+        }  catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    private Employee convertSqlInfoToEmployee(ResultSet resultSet) throws SQLException {
-        Employee employee = new Employee();
-
-        employee.setEmployee_id(resultSet.getInt("employee_id"));
-        employee.setEmployeeEmail(resultSet.getString("employee_email"));
-        employee.setPassword(resultSet.getString("employee_pwd"));
-        employee.setIsManager(resultSet.getBoolean("default"));
-        return employee;
+    @Override
+    public Employee findById(int employee_id) {
+        return null;
     }
 
     @Override
@@ -107,6 +83,39 @@ public class EmployeeDAO implements Crudable<Employee> {
     @Override
     public boolean delete(int id) {
         return false;
+    }
+
+    public Employee loginCheck(String employee_Email, String password) throws InvalidEmployeeInputException {
+
+        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
+            String sql = "SELECT * FROM employee WHERE employee_email = ? AND employee_pwd = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, employee_Email);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()) {
+                throw new InvalidEmployeeInputException("Entered information for " + employee_Email + "was incorrect. Try again.");
+            }
+                return convertSqlInfoToEmployee(resultSet);
+
+        } catch (SQLException e) {
+                throw new RuntimeException(e);
+        }
+
+    }
+
+    private Employee convertSqlInfoToEmployee(ResultSet resultSet) throws SQLException {
+        Employee employee = new Employee();
+
+        employee.setEmployee_id(resultSet.getInt("employee_id"));
+        employee.setEmployeeEmail(resultSet.getString("employee_email"));
+        employee.setPassword(resultSet.getString("employee_pwd"));
+        employee.employee_role(resultSet.getBoolean("default"));
+
+        return employee;
     }
 }
 

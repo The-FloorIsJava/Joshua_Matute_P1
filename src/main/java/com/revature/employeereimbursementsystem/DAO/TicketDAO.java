@@ -1,4 +1,4 @@
 package com.revature.employeereimbursementsystem.DAO;
 
-public class ReimbursementDAO {
+public class TicketDAO {
 }

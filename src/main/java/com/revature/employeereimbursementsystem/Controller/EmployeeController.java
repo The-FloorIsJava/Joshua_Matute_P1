@@ -3,6 +3,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
+import com.revature.employeereimbursementsystem.Model.Ticket;
 import io.javalin.Javalin;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
@@ -12,44 +13,62 @@ import java.util.List;
 
 public class EmployeeController {
 
-        EmployeeService employeeService;
-        Javalin app;
-        public EmployeeController(Javalin app){
-            employeeService = new EmployeeService((new EmployeeDAO()));
-            this.app = app;
-        }
-        public void employeeEndpoint() {
+    EmployeeService employeeService;
+    Javalin app;
 
-        app.post("employee", this::getAllPostEmployeeHandler);
-        app.get("employee_email", this::getSpecificEmployeeHandler);
+    public EmployeeController(Javalin app) {
+        employeeService = new EmployeeService((new EmployeeDAO()));
+        this.app = app;
+    }
+
+    public void employeeEndpoint() {
+
+        app.post("register", this::registerHandler);
         app.post("login", this::loginHandler);
+        app.post("submit ticket", this::submitHandler);
         app.delete("logout", this::logoutHandler);
+    }
+
+
+    private void registerHandler(Context context) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Employee employee = mapper.readValue(context.body(), Employee.class);
+        employee = employeeService.registerEmployee(employee);
+        if (employee == null) {
+            context.json("This email address is already in use. Please register with another email address.");
+        } else {
+            context.json(employee);
         }
+    }
+
+    private void loginHandler(Context context) throws JsonProcessingException{
+
+        ObjectMapper mapper = new ObjectMapper();
+        LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
+        employeeService.login(loginCreds.getEmployee_email(), loginCreds.getPassword());
+        context.json("Login Successful. Welcome.");
+
+    }
 
     private void logoutHandler(Context context) {
-            int employeeID = employeeService.getSessionEmployee().getEmployee_id();
-            employeeService.logout();
-            context.json(employeeID + " has logged out");
+        String employeeEmail = employeeService.getSessionEmployee().getEmployeeEmail();
+        employeeService.logout();
+        context.json(employeeEmail + " has logged out.");
     }
 
 
-    private void loginHandler(Context context) throws JsonProcessingException {
-            ObjectMapper mapper = new ObjectMapper();
-            Employee employee = mapper.readValue(context.body(), Employee.class);
+    private void submitHandler(Context context) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Ticket ticket = mapper.readValue(context.body(), Ticket.class);
+        context.json(ticket);
+
     }
-
-    private void getSpecificEmployeeHandler(Context context) {
-            String employeeEmail = context.pathParam("employee_email");
-            Employee employee = employeeService.getSessionEmployee();
-            context.json(employee);
-    }
-
-    private void getAllPostEmployeeHandler(Context context) {
-            List<Employee> allEmployees = employeeService.getAllEmployees();
-    }
-
-
 
 
 }
+
+
+
 

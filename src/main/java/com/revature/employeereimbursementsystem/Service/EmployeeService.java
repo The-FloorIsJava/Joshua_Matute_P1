@@ -1,56 +1,49 @@
 package com.revature.employeereimbursementsystem.Service;
 import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
+import com.revature.employeereimbursementsystem.Model.Ticket;
 import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
 
 import java.util.List;
 
 public class EmployeeService {
-
-
-    private final EmployeeDAO employeeDAO;
     private Employee sessionEmployee = null;
+    private final EmployeeDAO employeeDAO;
 
     public EmployeeService(EmployeeDAO employeeDAO){
         this.employeeDAO = employeeDAO;
     }
 
-    public int login (Employee employee) {
-
-        int temp = 0;
-
-        try {
-            int employee_id = employee.getEmployee_id();
-            String password = employee.getPassword();
-            Employee approved = employeeDAO.loginCheck(employee_id, password);
-
-            if (approved != null) {
-                sessionEmployee = approved;
-                temp = 1;
-            }
-        } catch (InvalidEmployeeInputException e){
-            e.printStackTrace();
-            temp = 2;
-        }
-        return temp;
-    }
-
-    public void logout() {
-        sessionEmployee = null;
-    }
-
-    public Employee registerNewEmployee(Employee employee){
+    public Employee registerEmployee(Employee employee) {
         return employeeDAO.create(employee);
     }
 
-
-    public Employee getSpecificEmployee (int employeeID){
+    public Employee getEmployee(String employee_email) {
         return null;
     }
 
-    public List<Employee> getAllEmployees(){
+    public void removeEmployee(String employee_email) {
+
+    }
+
+    public List<Employee> getAllEmployees() {
         return employeeDAO.findAll();
     }
+
+    public Ticket submitTicket(Ticket ticket) {
+        return null;
+    }
+
+
+    public void login(String employeeEmail, String password) {
+        sessionEmployee = employeeDAO.loginCheck(employeeEmail, password);
+    }
+
+
+    public void logout() {
+         sessionEmployee = null;
+    }
+
     public Employee getSessionEmployee(){
         return  sessionEmployee;
     }
