@@ -20,7 +20,7 @@ public class EmployeeDAO implements Crudable<Employee> {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
 
-            String sql = "INSERT INTO employee (employee_id, employee_email, employee_role, employee_pwd) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO employee (employee_username, employee_email, employee_role, employee_pwd) VALUES (?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 

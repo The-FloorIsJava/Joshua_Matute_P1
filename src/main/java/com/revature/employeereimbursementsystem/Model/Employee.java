@@ -15,8 +15,6 @@ public class Employee {
     private String employeeUsername;
     private String employeeEmail;
     private boolean employeeRole;
-    @JsonAlias(value = {"pass", "PaSSWorD"})
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     public Employee() {}
 

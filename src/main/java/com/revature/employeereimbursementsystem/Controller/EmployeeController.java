@@ -34,7 +34,7 @@ public class EmployeeController {
         Employee employee = mapper.readValue(context.body(), Employee.class);
         employee = employeeService.registerEmployee(employee);
         if (employee == null) {
-            context.json("This email address is already in use. Please register with another email address.");
+            context.json("This username is already in use. Please register with an original username.");
         } else {
             context.json(employee);
         }

@@ -35,8 +35,8 @@ public class EmployeeService {
     }
 
 
-    public void login(String employeeEmail, String password) {
-        sessionEmployee = employeeDAO.loginCheck(employeeEmail, password);
+    public void login(String employeeUsername, String password) {
+        sessionEmployee = employeeDAO.loginCheck(employeeUsername, password);
     }
 
 
