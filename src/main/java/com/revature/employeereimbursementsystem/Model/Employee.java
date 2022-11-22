@@ -12,19 +12,19 @@ public class Employee {
     information and to keep it in the same class.
     */
 
-    private int employee_id;
+    private String employeeUsername;
     private String employeeEmail;
-    private boolean employee_role;
+    private boolean employeeRole;
     @JsonAlias(value = {"pass", "PaSSWorD"})
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     public Employee() {}
 
-        public Employee(int employeeID, String employeeEmail, String password, boolean employee_role)
+        public Employee(String employeeUsername, String employeeEmail, String password, boolean employeeRole)
         {
-            this.employee_id = employeeID;
+            this.employeeUsername = employeeUsername;
             this.employeeEmail = employeeEmail;
-            this.employee_role = false;
+            this.employeeRole = false;
             this.password = password;
 
         }
@@ -37,11 +37,11 @@ public class Employee {
 
 
         //employeeID getters & setters
-        public int getEmployee_id() {
-        return employee_id;
+        public String getEmployeeUsername() {
+        return employeeUsername;
         }
-        public void setEmployee_id(int employee_id){
-        this.employee_id = employee_id;
+        public void setEmployeeUsername(String employeeUsername){
+        this.employeeUsername = employeeUsername;
         }
 
         //employeeEmail getters & setters
@@ -53,12 +53,12 @@ public class Employee {
         }
 
         //employeeRole getters & setters
-        public boolean employee_role(){
-        return employee_role;
+        public boolean employeeRole(){
+        return employeeRole;
         }
-        public void employee_role(boolean aDefault){
-            if (employee_role) this.employee_role = true;
-            else this.employee_role = false;
+        public void employeeRole(boolean aDefault){
+            if (employeeRole) this.employeeRole = true;
+            else this.employeeRole = false;
         }
 
         //password getters & setters

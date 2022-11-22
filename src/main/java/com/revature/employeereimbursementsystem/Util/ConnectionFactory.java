@@ -35,7 +35,9 @@ public class ConnectionFactory {
 
             try {
                 return DriverManager.getConnection(properties.getProperty("url"), properties.getProperty("username"), properties.getProperty("password"));
-            } catch (SQLException e) {
+            }
+            catch (SQLException e)
+            {
                 e.printStackTrace();
                 return null;
             }

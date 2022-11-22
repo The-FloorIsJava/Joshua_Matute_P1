@@ -20,13 +20,13 @@ public class EmployeeDAO implements Crudable<Employee> {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
 
-            String sql = "INSERT INTO employee (employee_id, employee_email, employee_isManager, employee_pwd) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO employee (employee_id, employee_email, employee_role, employee_pwd) VALUES (?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, newEmployee.getEmployee_id());
+            preparedStatement.setString(1, newEmployee.getEmployeeUsername());
             preparedStatement.setString(2, newEmployee.getEmployeeEmail());
-            preparedStatement.setBoolean(3, newEmployee.employee_role());
+            preparedStatement.setBoolean(3, newEmployee.employeeRole());
             preparedStatement.setString(4, newEmployee.getPassword());
 
             int checkInsert = preparedStatement.executeUpdate();
@@ -38,6 +38,7 @@ public class EmployeeDAO implements Crudable<Employee> {
 
         } catch (Exception e) {
             e.printStackTrace();
+
             return null;
         }
     }
@@ -66,7 +67,7 @@ public class EmployeeDAO implements Crudable<Employee> {
     }
 
     @Override
-    public Employee findById(int employee_id) {
+    public Employee findById(int employeeId) {
         return null;
     }
 
@@ -85,19 +86,19 @@ public class EmployeeDAO implements Crudable<Employee> {
         return false;
     }
 
-    public Employee loginCheck(String employee_Email, String password) throws InvalidEmployeeInputException {
+    public Employee loginCheck(String employeeUsername, String password) throws InvalidEmployeeInputException {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "SELECT * FROM employee WHERE employee_email = ? AND employee_pwd = ?";
+            String sql = "SELECT * FROM employee WHERE employee_username = ? AND employee_pwd = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setString(1, employee_Email);
+            preparedStatement.setString(1, employeeUsername);
             preparedStatement.setString(2, password);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if(!resultSet.next()) {
-                throw new InvalidEmployeeInputException("Entered information for " + employee_Email + "was incorrect. Try again.");
+                throw new InvalidEmployeeInputException("Entered information for " + employeeUsername + "was incorrect. Try again.");
             }
                 return convertSqlInfoToEmployee(resultSet);
 
@@ -110,10 +111,10 @@ public class EmployeeDAO implements Crudable<Employee> {
     private Employee convertSqlInfoToEmployee(ResultSet resultSet) throws SQLException {
         Employee employee = new Employee();
 
-        employee.setEmployee_id(resultSet.getInt("employee_id"));
+        employee.setEmployeeUsername(resultSet.getString("employee_username"));
         employee.setEmployeeEmail(resultSet.getString("employee_email"));
         employee.setPassword(resultSet.getString("employee_pwd"));
-        employee.employee_role(resultSet.getBoolean("default"));
+        employee.employeeRole(resultSet.getBoolean("employee_role"));
 
         return employee;
     }

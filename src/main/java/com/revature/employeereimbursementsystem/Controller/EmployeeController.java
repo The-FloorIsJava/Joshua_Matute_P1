@@ -9,8 +9,6 @@ import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
 import io.javalin.http.Context;
 
-import java.util.List;
-
 public class EmployeeController {
 
     EmployeeService employeeService;
@@ -46,7 +44,7 @@ public class EmployeeController {
 
         ObjectMapper mapper = new ObjectMapper();
         LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
-        employeeService.login(loginCreds.getEmployee_email(), loginCreds.getPassword());
+        employeeService.login(loginCreds.getEmployeeUsername(), loginCreds.getPassword());
         context.json("Login Successful. Welcome.");
 
     }

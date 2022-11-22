@@ -5,15 +5,15 @@ package com.revature.employeereimbursementsystem.Util.DTO;
 
 public class LoginCredentials {
 
-        private String employee_email;
+        private String employeeUsername;
         private String password;
 
-        public String getEmployee_email() {
-            return employee_email;
+        public String getEmployeeUsername() {
+            return employeeUsername;
         }
 
-        public void setEmployee_email(String employee_email) {
-            this.employee_email = employee_email;
+        public void setEmployeeUsername(String employeeUsername) {
+            this.employeeUsername = employeeUsername;
         }
 
         public String getPassword() {
