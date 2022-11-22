@@ -1,6 +1,7 @@
 package com.revature.employeereimbursementsystem.DAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
+import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
 import com.revature.employeereimbursementsystem.Util.Interface.Crudable;
 
 import java.sql.*;
@@ -18,7 +19,7 @@ public class EmployeeDAO implements Crudable<Employee> {
     public Employee create(Employee newEmployee) {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "insert into employee_id, employee_email, employee_isManager, employee_pwd) values (?, ?, ?, ?)";
+            String sql = "INSERT INTO employee (employee_id, employee_email, employee_isManager, employee_pwd) VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             preparedStatement.setInt(1, newEmployee.getEmployee_id());
@@ -37,6 +38,29 @@ public class EmployeeDAO implements Crudable<Employee> {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public Employee loginCheck(int employee_id, String password) throws InvalidEmployeeInputException {
+
+        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
+            String sql = "SELECT * FROM employee WHERE employee_id = ? AND employee_pwd = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, employee_id);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if(!resultSet.next()) {
+                throw new InvalidEmployeeInputException("Entered information for " + employee_id + "was incorrect. Try again.");
+            }
+                return convertSqlInfoToEmployee(resultSet);
+
+        } catch (SQLException e) {
+                throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -83,11 +107,6 @@ public class EmployeeDAO implements Crudable<Employee> {
     @Override
     public boolean delete(int id) {
         return false;
-    }
-
-    public Employee loginCheck(int employee_id, String password) {
-
-        return null;
     }
 }
 

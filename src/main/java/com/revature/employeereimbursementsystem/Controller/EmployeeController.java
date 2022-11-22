@@ -32,11 +32,10 @@ public class EmployeeController {
             context.json(employeeID + " has logged out");
     }
 
+
     private void loginHandler(Context context) throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();
-            LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
-            employeeService.login(loginCreds.getEmployee_id(), loginCreds.getPassword());
-            context.json("Successfully logged in.");
+            Employee employee = mapper.readValue(context.body(), Employee.class);
     }
 
     private void getSpecificEmployeeHandler(Context context) {

@@ -1,6 +1,7 @@
 package com.revature.employeereimbursementsystem.Service;
 import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
+import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
 
 import java.util.List;
 
@@ -14,9 +15,24 @@ public class EmployeeService {
         this.employeeDAO = employeeDAO;
     }
 
-    public Employee login(int employee_id, String password) {
-        sessionEmployee = employeeDAO.loginCheck(employee_id, password);
-        return this.sessionEmployee;
+    public int login (Employee employee) {
+
+        int temp = 0;
+
+        try {
+            int employee_id = employee.getEmployee_id();
+            String password = employee.getPassword();
+            Employee approved = employeeDAO.loginCheck(employee_id, password);
+
+            if (approved != null) {
+                sessionEmployee = approved;
+                temp = 1;
+            }
+        } catch (InvalidEmployeeInputException e){
+            e.printStackTrace();
+            temp = 2;
+        }
+        return temp;
     }
 
     public void logout() {
