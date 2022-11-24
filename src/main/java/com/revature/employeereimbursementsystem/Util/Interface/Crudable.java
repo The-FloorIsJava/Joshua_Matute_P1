@@ -1,6 +1,6 @@
 package com.revature.employeereimbursementsystem.Util.Interface;
 import com.revature.employeereimbursementsystem.Model.Employee;
-
+import com.revature.employeereimbursementsystem.Model.Ticket;
 import java.util.List;
 
 /*

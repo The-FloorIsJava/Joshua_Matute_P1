@@ -1,5 +1,6 @@
 package com.revature.employeereimbursementsystem.DAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
+import com.revature.employeereimbursementsystem.Model.Ticket;
 import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
 import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
 import com.revature.employeereimbursementsystem.Util.Interface.Crudable;

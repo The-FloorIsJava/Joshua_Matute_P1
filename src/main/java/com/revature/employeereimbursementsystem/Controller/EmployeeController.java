@@ -14,8 +14,8 @@ public class EmployeeController {
     EmployeeService employeeService;
     Javalin app;
 
-    public EmployeeController(Javalin app) {
-        employeeService = new EmployeeService((new EmployeeDAO()));
+    public EmployeeController(Javalin app, EmployeeService employeeService) {
+        this.employeeService =  employeeService;
         this.app = app;
     }
 
@@ -23,7 +23,7 @@ public class EmployeeController {
 
         app.post("register", this::registerHandler);
         app.post("login", this::loginHandler);
-        app.post("submit ticket", this::submitHandler);
+        app.post("submitTicket", this::submitHandler);
         app.delete("logout", this::logoutHandler);
     }
 
