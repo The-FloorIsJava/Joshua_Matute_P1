@@ -20,7 +20,7 @@ public class TicketDAO implements Crudable<Ticket> {
             String sql = "insert into tickets ( amount, ticket_id, ticket_type, status, requester) values (?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, newTicket.getAmount());
-            preparedStatement.setInt(2, newTicket.getTicketID());
+            preparedStatement.setDouble(2, newTicket.getTicketID());
             preparedStatement.setString(3, newTicket.getTicketType());
             preparedStatement.setString(4, newTicket.getStatus());
             preparedStatement.setString(5, newTicket.getRequester());

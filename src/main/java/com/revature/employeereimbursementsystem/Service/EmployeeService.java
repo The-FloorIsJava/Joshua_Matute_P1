@@ -33,8 +33,28 @@ public class EmployeeService {
         return employeeDAO.findAll();
     }
 
-    public Ticket submitTicket(Ticket ticket) {
-        return null;
+    public double submitTicket(Ticket ticket) {
+
+        try{
+            Employee requester = this.getSessionEmployee();
+            int temp = 0;
+            if(requester == null) {
+                temp = 1;
+            } else if (ticket.getAmount() != 0 && ticket.getTicketType() != null) {
+                ticket.setStatus("Pending");
+                ticket.setRequester(requester.getEmployeeUsername());
+                ticketDAO.create(ticket);
+                temp = 2;
+            } else {
+                temp = 3;
+            }
+            return temp;
+
+        } catch (RuntimeException r) {
+            r.printStackTrace();
+            System.out.println("This ticket does not exist in the ERS.");
+        }
+        return 0;
     }
 
 
@@ -52,23 +72,6 @@ public class EmployeeService {
     }
 
 
-    public int ticketRequest(Ticket ticket) {
-        Employee requester = this.getSessionEmployee();
-        int temp = 0;
-
-        if (requester == null) {
-            temp = 1;
-        } else if (ticket.getAmount() != 0 && ticket.getTicketType() != null) {
-            ticket.setStatus("Pending");
-            ticket.setRequester(requester.getEmployeeUsername());
-            ticketDAO.create(ticket);
-            temp = 2;
-        } else {
-            temp = 3;
-        }
-        return temp;
-    }
-
     public List<Ticket> employeeTickets(Employee employee) {
         return ticketDAO.returnEmployeeTickets(employee);
     }
@@ -83,7 +86,9 @@ public class EmployeeService {
 
     public List<Ticket> deniedEmployeeTickets(Employee employee) {
         return ticketDAO.deniedEmployeeTickets(employee);
-    }
+
+
+    }//Manager features.
 
     public List<Ticket> viewPendingEmployeeTickets (Employee employee) {
         if (employee.employeeRole()) {

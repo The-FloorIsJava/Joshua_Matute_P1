@@ -2,7 +2,7 @@ package com.revature.employeereimbursementsystem.Model;
 
 public class Ticket {
     private double amount;
-    private int ticketID;
+    private double ticketID;
     private String ticketType;
     private String status;
     private String requester;
@@ -10,7 +10,7 @@ public class Ticket {
 
     public Ticket() {};
 
-    public Ticket(double amount, int ticketID, String ticketType, String status, String requester) {
+    public Ticket(double amount, double ticketID, String ticketType, String status, String requester) {
         this.amount = amount;
         this.ticketID = ticketID;
         this.ticketType = ticketType;
@@ -25,10 +25,10 @@ public class Ticket {
         this.amount = amount;
     }
 
-    public int getTicketID() {
+    public double getTicketID() {
         return ticketID;
     }
-    public void setTicketID(int ticketID){
+    public void setTicketID(double ticketID){
         this.ticketID = ticketID;
     }
 

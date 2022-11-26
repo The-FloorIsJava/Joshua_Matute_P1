@@ -34,9 +34,9 @@ public class EmployeeController {
         Employee employee = mapper.readValue(context.body(), Employee.class);
         employee = employeeService.registerEmployee(employee);
         if (employee == null) {
-            context.json("This username is already in use. Please register with an original username.");
+            context.json("Username/email is already in use. Please register with an original username/email.");
         } else {
-            context.json(employee);
+            context.json("You are now registered into the ERS. Welcome.");
         }
     }
 
@@ -50,9 +50,9 @@ public class EmployeeController {
     }
 
     private void logoutHandler(Context context) {
-        String employeeEmail = employeeService.getSessionEmployee().getEmployeeEmail();
+        String employeeUsername = employeeService.getSessionEmployee().getEmployeeUsername();
         employeeService.logout();
-        context.json(employeeEmail + " has logged out.");
+        context.json(employeeUsername + " has logged out.");
     }
 
 
@@ -62,8 +62,15 @@ public class EmployeeController {
         Ticket ticket = mapper.readValue(context.body(), Ticket.class);
         context.json(ticket);
 
-    }
+        double temp = employeeService.submitTicket(ticket);
 
+        if (temp == 1) {
+            context.json("Please log in to submit a request.");
+        } else if (temp == 2) {
+            context.json("Your reimbursement ticket has been submitted.");
+        }
+
+    }
 
 }
 

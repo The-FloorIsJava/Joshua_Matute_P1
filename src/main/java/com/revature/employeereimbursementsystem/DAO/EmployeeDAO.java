@@ -115,7 +115,7 @@ public class EmployeeDAO implements Crudable<Employee> {
         employee.setEmployeeUsername(resultSet.getString("employee_username"));
         employee.setEmployeeEmail(resultSet.getString("employee_email"));
         employee.setPassword(resultSet.getString("employee_pwd"));
-        employee.employeeRole(resultSet.getBoolean("employee_role"));
+        employee.setEmployeeRole(resultSet.getBoolean("employee_role"));
 
         return employee;
     }

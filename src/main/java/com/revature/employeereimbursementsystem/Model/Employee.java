@@ -22,7 +22,7 @@ public class Employee {
         {
             this.employeeUsername = employeeUsername;
             this.employeeEmail = employeeEmail;
-            this.employeeRole = false;
+            this.employeeRole = employeeRole;
             this.password = password;
 
         }
@@ -34,7 +34,7 @@ public class Employee {
          */
 
 
-        //employeeID getters & setters
+        //employeeUsername getters & setters
         public String getEmployeeUsername() {
         return employeeUsername;
         }
@@ -54,17 +54,22 @@ public class Employee {
         public boolean employeeRole(){
         return employeeRole;
         }
-        public void employeeRole(boolean aDefault){
-            if (employeeRole) this.employeeRole = true;
-            else this.employeeRole = false;
+        public void setEmployeeRole(boolean employeeRole){
+            this.employeeRole =employeeRole;
         }
 
         //password getters & setters
         public String getPassword(){
         return password;
         }
-        public void setPassword(String employee_pwd){
+        public void setPassword(String password){
             this.password = password;
         }
+
+    @Override
+    public String toString() {
+        return "User [Username = " + employeeUsername + ", Password = " + password + ", Role =" + employeeRole + ", Manager ID =" + "]";
+    }
+
 
 }
