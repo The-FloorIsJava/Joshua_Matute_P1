@@ -16,6 +16,12 @@ public class EmployeeService {
         this.employeeDAO = employeeDAO;
         this.ticketDAO = ticketDAO;
     }
+    public Employee getSessionEmployee() {
+        return sessionEmployee;
+    }
+    public void setSessionEmployee(Employee employee) {
+        this.sessionEmployee = employee;
+    }
 
     public Employee registerEmployee(Employee employee) {
         return employeeDAO.create(employee);
@@ -32,6 +38,32 @@ public class EmployeeService {
     public List<Employee> getAllEmployees() {
         return employeeDAO.findAll();
     }
+
+
+    public int login (Employee employee) {
+        int temp = 0;
+     try {
+        String username = sessionEmployee.getEmployeeUsername();
+        String password = sessionEmployee.getPassword();
+        Employee authenticated = employeeDAO.loginCheck(username, password);
+
+        if (authenticated != null) {
+            this.setSessionEmployee(authenticated);
+            temp = 1;
+        }
+
+        } catch (InvalidEmployeeInputException e) {
+         e.printStackTrace();
+         temp = 2;
+     }
+     return temp;
+    }
+
+
+    public void logout() {
+         sessionEmployee = null;
+    }
+
 
     public double submitTicket(Ticket ticket) {
 
@@ -56,21 +88,6 @@ public class EmployeeService {
         }
         return 0;
     }
-
-
-    public void login(String employeeUsername, String password) {
-        sessionEmployee = employeeDAO.loginCheck(employeeUsername, password);
-    }
-
-
-    public void logout() {
-         sessionEmployee = null;
-    }
-
-    public Employee getSessionEmployee(){
-        return  sessionEmployee;
-    }
-
 
     public List<Ticket> employeeTickets(Employee employee) {
         return ticketDAO.returnEmployeeTickets(employee);

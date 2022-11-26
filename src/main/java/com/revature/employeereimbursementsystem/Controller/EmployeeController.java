@@ -41,11 +41,11 @@ public class EmployeeController {
     }
 
     private void loginHandler(Context context) throws JsonProcessingException{
-
         ObjectMapper mapper = new ObjectMapper();
         LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
-        employeeService.login(loginCreds.getEmployeeUsername(), loginCreds.getPassword());
-        context.json("Login Successful. Welcome.");
+        Employee employee = mapper.readValue(context.body(), Employee.class);
+        int temp = employeeService.login(employee);
+
 
     }
 
