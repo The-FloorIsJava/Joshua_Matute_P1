@@ -8,6 +8,8 @@ public class LoginCredentials {
         private String employeeUsername;
         private String password;
 
+        private boolean employeeRole;
+
         public String getEmployeeUsername() {
             return employeeUsername;
         }
@@ -22,6 +24,10 @@ public class LoginCredentials {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+
+        public boolean getEmployeeRole() {
+            return employeeRole;
         }
 
 }

@@ -6,11 +6,10 @@ import org.eclipse.jetty.util.DateCache;
 
 public class TicketService {
 
-    Employee temp;
-
     private final TicketDAO ticketDAO;
 
     public TicketService(TicketDAO ticketDAO) {
         this.ticketDAO = ticketDAO;
     }
+
 }

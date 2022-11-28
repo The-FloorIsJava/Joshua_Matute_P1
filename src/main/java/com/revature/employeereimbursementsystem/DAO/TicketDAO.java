@@ -17,13 +17,13 @@ public class TicketDAO implements Crudable<Ticket> {
     @Override
     public Ticket create(Ticket newTicket) {
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "insert into tickets ( amount, ticket_id, ticket_type, status, requester) values (?, ?, ?, ?, ?)";
+            String sql = "insert into tickets (amount, ticket_type, status, requester) values (?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, newTicket.getAmount());
-            preparedStatement.setDouble(2, newTicket.getTicketID());
-            preparedStatement.setString(3, newTicket.getTicketType());
-            preparedStatement.setString(4, newTicket.getStatus());
-            preparedStatement.setString(5, newTicket.getRequester());
+            preparedStatement.setString(2, newTicket.getTicketType());
+            preparedStatement.setString(3, newTicket.getStatus());
+            preparedStatement.setString(4, newTicket.getRequester());
+
 
             int checkInsert = preparedStatement.executeUpdate();
 
@@ -38,6 +38,7 @@ public class TicketDAO implements Crudable<Ticket> {
         }
     }
 
+        //Allows employees to view their reimbursement tickets
     public List<Ticket> returnEmployeeTickets(Employee employee) {
         List<Ticket> employeeTickets = new ArrayList<>();
 
@@ -59,17 +60,7 @@ public class TicketDAO implements Crudable<Ticket> {
 
     }
 
-    private Ticket convertSqlInfoToTicket(ResultSet resultSet) throws SQLException {
-        Ticket ticket = new Ticket();
 
-        ticket.setAmount(resultSet.getDouble("amount"));
-        ticket.setTicketID(resultSet.getInt("ticket_id"));
-        ticket.setTicketType(resultSet.getString("ticket_type"));
-        ticket.setStatus(resultSet.getString("status"));
-        ticket.setRequester(resultSet.getString("requester"));
-
-        return ticket;
-    }
 
     public List<Ticket> approvedEmployeeTickets(Employee employee) {
         List<Ticket> employeeTickets = new ArrayList<>();
@@ -90,6 +81,7 @@ public class TicketDAO implements Crudable<Ticket> {
     }
     public List<Ticket> pendingEmployeeTickets(Employee employee) {
         List<Ticket> employeeTickets = new ArrayList<>();
+
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
             String sql = "select * from tickets where requester = ? and status = 'Pending'";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -139,11 +131,26 @@ public class TicketDAO implements Crudable<Ticket> {
         }
     }
 
+    public void updateTicket(Ticket ticket){
+        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
+            String sql = "update ticket set status = ? where ticket_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, ticket.getTicketID());
+            preparedStatement.setString(2, ticket.getStatus());
+
+            preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean approveTicket(Ticket ticket) throws RuntimeException {
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
             String sql = "update tickets set status = 'Approved' where ticket_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, ticket.getTicketID());
+            preparedStatement.setString(2, ticket.getStatus());
 
             int checkInsert = preparedStatement.executeUpdate();
 
@@ -157,6 +164,18 @@ public class TicketDAO implements Crudable<Ticket> {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private Ticket convertSqlInfoToTicket(ResultSet resultSet) throws SQLException {
+        Ticket ticket = new Ticket();
+
+        ticket.setAmount(resultSet.getDouble("amount"));
+        ticket.setTicketID(resultSet.getDouble("ticket_id"));
+        ticket.setTicketType(resultSet.getString("ticket_type"));
+        ticket.setStatus(resultSet.getString("status"));
+        ticket.setRequester(resultSet.getString("requester"));
+
+        return ticket;
     }
 
         @Override

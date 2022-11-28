@@ -9,6 +9,8 @@ import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
 import io.javalin.http.Context;
 
+import java.util.List;
+
 public class EmployeeController {
 
     EmployeeService employeeService;
@@ -25,8 +27,8 @@ public class EmployeeController {
         app.post("login", this::loginHandler);
         app.post("submitTicket", this::submitHandler);
         app.delete("logout", this::logoutHandler);
+        app.get("allEmployees", this::getAllEmployeesHandler);
     }
-
 
     private void registerHandler(Context context) throws JsonProcessingException {
 
@@ -40,13 +42,22 @@ public class EmployeeController {
         }
     }
 
+    private void getAllEmployeesHandler(Context context) {
+        List<Employee> allEmployees = employeeService.getAllEmployees();
+        context.json(allEmployees);
+    }
+
+
     private void loginHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         LoginCredentials loginCreds = mapper.readValue(context.body(), LoginCredentials.class);
         Employee employee = mapper.readValue(context.body(), Employee.class);
         int temp = employeeService.login(employee);
-
-
+        if (temp == 1) {
+            context.json("You are now logged in to the ERS. Welcome.");
+        } else if (temp == 2) {
+            context.json("Error. Please try logging in again.");
+        }
     }
 
     private void logoutHandler(Context context) {

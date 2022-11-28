@@ -37,6 +37,36 @@ public class TicketController {
 
     }
 
+
+
+    private void viewEmployeeTicketsHandler(Context context) {
+        if (employeeService.getSessionEmployee() != null) {
+            Employee employee = employeeService.getSessionEmployee();
+            List<Ticket> employeeTicket = employeeService.employeeTickets(employee);
+            if (employeeTicket != null) {
+                context.json(employeeTicket);
+            } else {
+                context.json("Error. Reimbursement ticket retrieval error. Try again.");
+            }
+        } else {
+            context.json("You must log in to view your reimbursement tickets.");
+        }
+    }
+
+    private void viewApprovedEmployeeTickets(Context context) {
+        if (employeeService.getSessionEmployee() != null) {
+            Employee employee = employeeService.getSessionEmployee();
+            List<Ticket> employeeTickets = employeeService.approvedEmployeeTickets(employee);
+            if(employeeTickets != null) {
+                context.json(employeeTickets);
+            } else {
+                context.json("Error retrieving your approved reimbursement tickets.");
+            }
+        } else {
+            context.json("Please log in to your account to view your approved reimbursement tickets.");
+        }
+    }
+
     private void viewDeniedEmployeeTickets(Context context) {
         if (employeeService.getSessionEmployee() != null) {
             Employee employee = employeeService.getSessionEmployee();
@@ -54,21 +84,18 @@ public class TicketController {
 
 
 
-    private void viewApprovedEmployeeTickets(Context context) {
+    private void viewPendingTicketsHandler(Context context) {
         if (employeeService.getSessionEmployee() != null) {
             Employee employee = employeeService.getSessionEmployee();
-            List<Ticket> employeeTickets = employeeService.approvedEmployeeTickets(employee);
-            if(employeeTickets != null) {
-                context.json(employeeTickets);
+            if (employee.employeeRole()) {
+                List<Ticket> pendingTickets = employeeService.viewPendingEmployeeTickets(employee);
+                context.json(pendingTickets);
             } else {
-                context.json("Error retrieving your approved reimbursement tickets.");
+                context.json("Error. Unable to retrieve a pending reimbursement ticket");
             }
         } else {
-            context.json("Please log in to your account to view your approved reimbursement tickets.");
+            context.json("Please log in.");
         }
-    }
-
-    private void viewPendingTicketsHandler(Context context) throws JsonProcessingException {
     }
 
     private void denyTicket(Context context) throws JsonProcessingException {
@@ -120,19 +147,6 @@ public class TicketController {
         }
     }
 
-    private void viewEmployeeTicketsHandler(Context context) {
-        if (employeeService.getSessionEmployee() != null) {
-            Employee employee = employeeService.getSessionEmployee();
-            List<Ticket> employeeTicket = employeeService.employeeTickets(employee);
-            if (employeeTicket != null) {
-                context.json(employeeTicket);
-            } else {
-                context.json("Error. Reimbursement ticket retrieval error. Try again.");
-            }
-        } else {
-            context.json("You must log in to view your reimbursement tickets.");
 
-        }
-    }
 
 }

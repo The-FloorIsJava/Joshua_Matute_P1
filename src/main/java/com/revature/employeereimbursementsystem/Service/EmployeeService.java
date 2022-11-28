@@ -3,7 +3,14 @@ import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.DAO.TicketDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
+import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
 import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
+import org.eclipse.jetty.util.DateCache;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,24 +34,12 @@ public class EmployeeService {
         return employeeDAO.create(employee);
     }
 
-    public Employee getEmployee(String employee_email) {
-        return null;
-    }
-
-    public void removeEmployee(String employee_email) {
-
-    }
-
-    public List<Employee> getAllEmployees() {
-        return employeeDAO.findAll();
-    }
-
 
     public int login (Employee employee) {
         int temp = 0;
      try {
-        String username = sessionEmployee.getEmployeeUsername();
-        String password = sessionEmployee.getPassword();
+        String username = employee.getEmployeeUsername();
+        String password = employee.getPassword();
         Employee authenticated = employeeDAO.loginCheck(username, password);
 
         if (authenticated != null) {
@@ -60,10 +55,8 @@ public class EmployeeService {
     }
 
 
-    public void logout() {
-         sessionEmployee = null;
-    }
 
+    // TICKET REQUEST FEATURES
 
     public double submitTicket(Ticket ticket) {
 
@@ -93,19 +86,26 @@ public class EmployeeService {
         return ticketDAO.returnEmployeeTickets(employee);
     }
 
+    public List<Ticket> updateTicket(Employee employee) {
+        return ticketDAO.updateTicket(ticket);
+    }
+
     public List<Ticket> approvedEmployeeTickets(Employee employee) {
         return ticketDAO.approvedEmployeeTickets(employee);
+    }
+
+
+
+    public List<Ticket> deniedEmployeeTickets(Employee employee) {
+        return ticketDAO.deniedEmployeeTickets(employee);
     }
 
     public List<Ticket> pendingEmployeeTickets(Employee employee) {
         return ticketDAO.pendingEmployeeTickets(employee);
     }
 
-    public List<Ticket> deniedEmployeeTickets(Employee employee) {
-        return ticketDAO.deniedEmployeeTickets(employee);
 
-
-    }//Manager features.
+    //Manager features.
 
     public List<Ticket> viewPendingEmployeeTickets (Employee employee) {
         if (employee.employeeRole()) {
@@ -130,6 +130,30 @@ public class EmployeeService {
         } else {
             return false;
         }
+    }
+
+    public void logout() {
+        sessionEmployee = null;
+    }
+
+
+
+    private Ticket convertSqlInfoToRequest(ResultSet resultSet) throws SQLException {
+        Ticket ticket = new Ticket();
+
+        ticket.setTicketID(resultSet.getDouble("ticket_id"));
+        ticket.setRequester(resultSet.getString("requester"));
+        ticket.setAmount(resultSet.getDouble("amount"));
+        ticket.setTicketType(resultSet.getString("ticket_type"));
+        ticket.setStatus(resultSet.getString("status"));
+
+        return ticket;
+    }
+    public void removeEmployee(String employee_email) {
+
+    }
+    public List<Employee> getAllEmployees() {
+        return employeeDAO.findAll();
     }
 
 

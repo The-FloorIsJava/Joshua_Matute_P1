@@ -67,26 +67,6 @@ public class EmployeeDAO implements Crudable<Employee> {
         }
     }
 
-    @Override
-    public Employee findById(int employeeId) {
-        return null;
-    }
-
-    @Override
-    public Employee findByID(int id) {
-        return null;
-    }
-
-    @Override
-    public boolean update(Employee updatedObject) {
-        return false;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return false;
-    }
-
     public Employee loginCheck(String employeeUsername, String password) throws InvalidEmployeeInputException {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
@@ -118,6 +98,26 @@ public class EmployeeDAO implements Crudable<Employee> {
         employee.setEmployeeRole(resultSet.getBoolean("employee_role"));
 
         return employee;
+    }
+
+    @Override
+    public Employee findById(int employeeId) {
+        return null;
+    }
+
+    @Override
+    public Employee findByID(int id) {
+        return null;
+    }
+
+    @Override
+    public boolean update(Employee updatedObject) {
+        return false;
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return false;
     }
 }
 
