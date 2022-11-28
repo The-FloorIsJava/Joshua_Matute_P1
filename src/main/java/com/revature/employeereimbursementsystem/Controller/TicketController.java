@@ -119,10 +119,7 @@ public class TicketController {
                 r.printStackTrace();
                 context.json("This ticket does not exist in this system.");
     }
-
-
-
-    }
+}
 
     private void approveTicket(Context context) throws JsonProcessingException {
         try {
@@ -146,7 +143,5 @@ public class TicketController {
             context.json("This reimbursement ticket does not exist.");
         }
     }
-
-
 
 }

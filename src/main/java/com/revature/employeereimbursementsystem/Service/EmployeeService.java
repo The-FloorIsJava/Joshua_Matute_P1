@@ -86,22 +86,14 @@ public class EmployeeService {
         return ticketDAO.returnEmployeeTickets(employee);
     }
 
-    public List<Ticket> updateTicket(Employee employee) {
-        return ticketDAO.updateTicket(ticket);
-    }
 
     public List<Ticket> approvedEmployeeTickets(Employee employee) {
         return ticketDAO.approvedEmployeeTickets(employee);
     }
 
 
-
     public List<Ticket> deniedEmployeeTickets(Employee employee) {
         return ticketDAO.deniedEmployeeTickets(employee);
-    }
-
-    public List<Ticket> pendingEmployeeTickets(Employee employee) {
-        return ticketDAO.pendingEmployeeTickets(employee);
     }
 
 

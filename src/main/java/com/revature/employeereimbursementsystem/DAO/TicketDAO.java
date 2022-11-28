@@ -130,7 +130,6 @@ public class TicketDAO implements Crudable<Ticket> {
             return null;
         }
     }
-
     public void updateTicket(Ticket ticket){
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
             String sql = "update ticket set status = ? where ticket_id = ?";
@@ -150,7 +149,6 @@ public class TicketDAO implements Crudable<Ticket> {
             String sql = "update tickets set status = 'Approved' where ticket_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, ticket.getTicketID());
-            preparedStatement.setString(2, ticket.getStatus());
 
             int checkInsert = preparedStatement.executeUpdate();
 
@@ -202,6 +200,7 @@ public class TicketDAO implements Crudable<Ticket> {
     public boolean delete(int id) {
         return false;
     }
+
 
 }
 
