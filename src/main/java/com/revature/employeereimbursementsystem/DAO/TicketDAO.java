@@ -130,39 +130,20 @@ public class TicketDAO implements Crudable<Ticket> {
             return null;
         }
     }
-    public void updateTicket(Ticket ticket){
+    public void updateTicket(double ticket_id, String status){
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "update ticket set status = ? where ticket_id = ?";
+            String sql = "update tickets set status = ? where ticket_id = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setDouble(1, ticket.getTicketID());
-            preparedStatement.setString(2, ticket.getStatus());
+            preparedStatement.setString(1, status);
+            preparedStatement.setDouble(2, ticket_id);
 
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean approveTicket(Ticket ticket) throws RuntimeException {
-        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "update tickets set status = 'Approved' where ticket_id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setDouble(1, ticket.getTicketID());
-
-            int checkInsert = preparedStatement.executeUpdate();
-
-            if (checkInsert == 0) {
-                throw new RuntimeException("Ticket was not added to the database.");
-            } else {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     private Ticket convertSqlInfoToTicket(ResultSet resultSet) throws SQLException {
         Ticket ticket = new Ticket();

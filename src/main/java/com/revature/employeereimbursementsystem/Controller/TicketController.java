@@ -8,6 +8,7 @@ import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Service.TicketService;
+import com.revature.employeereimbursementsystem.Util.DTO.TicketDTO;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import org.eclipse.jetty.util.DateCache;
@@ -29,8 +30,8 @@ public class TicketController {
     public void employeeEndpoint() {
 
         app.get("EmployeeTicket", this::viewEmployeeTicketsHandler);
-        app.post("ApproveTicket", this::approveTicket);
-        app.post("DenyTicket", this::denyTicket);
+        app.post("ApproveTicket", this::updateTicket);
+        app.post("DeniedTicket", this::updateTicket);
         app.get("PendingTicket", this::viewPendingTicketsHandler);
         app.get("ApprovedEmployeeTickets", this::viewApprovedEmployeeTickets);
         app.get("DeniedEmployeeTickets", this::viewDeniedEmployeeTickets);
@@ -98,50 +99,25 @@ public class TicketController {
         }
     }
 
-    private void denyTicket(Context context) throws JsonProcessingException {
-            try {
-                if (employeeService.getSessionEmployee() != null) {
-                    Employee employee = employeeService.getSessionEmployee();
-                    if(employee.employeeRole()) {
-                        ObjectMapper mapper = new ObjectMapper();
-                        Ticket ticket = mapper.readValue(context.body(), Ticket.class);
-                        boolean approved = employeeService.denyTicket(ticket);
-                        if (approved) {
-                            context.json("Reimbursement ticket has been denied.");
-                        }
-                    } else {
-                        context.json("You must be logged in as a manager in order to deny reimbursement tickets.");
-                }
-            } else {
-                    context.json("Error while attempting to deny reimbursement ticket, try again.");
-                }
-        } catch (RuntimeException r) {
-                r.printStackTrace();
-                context.json("This ticket does not exist in this system.");
-    }
-}
 
-    private void approveTicket(Context context) throws JsonProcessingException {
+    private void updateTicket(Context context) throws JsonProcessingException {
         try {
-            if(employeeService.getSessionEmployee() != null) {
+            if (employeeService.getSessionEmployee() != null) {
                 Employee employee = employeeService.getSessionEmployee();
                 if (employee.employeeRole()) {
                     ObjectMapper mapper = new ObjectMapper();
-                    Ticket ticket = mapper.readValue(context.body(), Ticket.class);
-                    boolean approved = employeeService.approveTicket(ticket);
-                    if (approved) {
-                        context.json("You have approved this reimbursement ticket.");
-                    }
+                    TicketDTO ticketDTO = mapper.readValue(context.body(), TicketDTO.class);
+                    employeeService.updateTicket(ticketDTO.getTicket_id(), ticketDTO.getStatus());
+                    context.json("You have updated and processed this reimbursement ticket.");
                 } else {
                     context.json("You must be logged in as a manager in order to approve reimbursement tickets.");
                 }
             } else {
-                context.json("Error approving reimbursement ticket, try again.");
+                context.json("Error processing reimbursement ticket, try again.");
             }
         } catch (RuntimeException r) {
             r.printStackTrace();
             context.json("This reimbursement ticket does not exist.");
         }
     }
-
 }
