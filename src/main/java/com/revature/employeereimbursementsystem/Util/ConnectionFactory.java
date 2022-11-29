@@ -6,6 +6,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+
+/*
+    This  method connects the java program to postgresql using db.properties which contains the url, username,
+    and password needed to connect the two.
+ */
 public class ConnectionFactory {
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
     private Properties properties = new Properties();

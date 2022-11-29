@@ -1,18 +1,10 @@
 package com.revature.employeereimbursementsystem.Service;
+
 import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.DAO.TicketDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
-import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
-import com.revature.employeereimbursementsystem.Util.DTO.TicketDTO;
 import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
-import org.eclipse.jetty.util.DateCache;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeService {

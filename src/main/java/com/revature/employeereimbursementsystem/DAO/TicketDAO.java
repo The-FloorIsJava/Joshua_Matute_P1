@@ -1,6 +1,5 @@
 package com.revature.employeereimbursementsystem.DAO;
 
-
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
 import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
@@ -13,7 +12,12 @@ import java.util.List;
 public class TicketDAO implements Crudable<Ticket> {
 
 
-    //Created a new Ticket request
+    /* Created a new Ticket request by using my connection factory, calling my sql tables columns and values and using
+        preparedStatements to set the value to the newly created tickets by getting the values from the Ticket model.
+        I then run a check to ensure that the submitted ticket is a valid submission. a runtime exception is added to
+        catch an error that may happen when an invalid input is entered. a sql exception is used to catch any errors
+        that may happen during the use of Javalin.
+     */
     @Override
     public Ticket create(Ticket newTicket) {
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
@@ -38,7 +42,12 @@ public class TicketDAO implements Crudable<Ticket> {
         }
     }
 
-        //Allows employees to view their reimbursement tickets
+        /*
+           a List is populated with employees submitted reimbursement tickets and then instantiated into an array list.
+        then the connection factory, calling my sql tables columns and values and using
+        preparedStatements to set the value to the newly created tickets by getting the values from the Ticket model.
+        I then run a check to ensure that the submitted ticket is a valid submission.
+         */
     public List<Ticket> returnEmployeeTickets(Employee employee) {
         List<Ticket> employeeTickets = new ArrayList<>();
 
@@ -61,7 +70,6 @@ public class TicketDAO implements Crudable<Ticket> {
     }
 
 
-
     public List<Ticket> approvedEmployeeTickets(Employee employee) {
         List<Ticket> employeeTickets = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
@@ -79,24 +87,7 @@ public class TicketDAO implements Crudable<Ticket> {
             return null;
         }
     }
-    public List<Ticket> pendingEmployeeTickets(Employee employee) {
-        List<Ticket> employeeTickets = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
-            String sql = "select * from tickets where requester = ? and status = 'Pending'";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, employee.getEmployeeUsername());
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                employeeTickets.add(convertSqlInfoToTicket(resultSet));
-            }
-            return employeeTickets;
-        } catch(SQLException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
     public List<Ticket> deniedEmployeeTickets(Employee employee) {
         List<Ticket> employeeTickets = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {

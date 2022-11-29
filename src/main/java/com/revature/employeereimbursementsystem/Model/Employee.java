@@ -1,15 +1,11 @@
 package com.revature.employeereimbursementsystem.Model;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Employee {
 
     /*
     This is the model for the Employee.
 
-    created the variables for the columns of my SQL table. I created them private because it is employee's private
-    information and to keep it in the same class.
+    created the variables for the columns related to my SQL table.
     */
 
     private String employeeUsername;
@@ -30,7 +26,7 @@ public class Employee {
         /*
         Used getters and setters to make the employees data more secure.
         Getters are used to return the correct data type information provided by the employee.
-        Setters are used to update the value of the Getters.
+        Setters are used to update the value of the Getters which we can use inside my controllers.
          */
 
 

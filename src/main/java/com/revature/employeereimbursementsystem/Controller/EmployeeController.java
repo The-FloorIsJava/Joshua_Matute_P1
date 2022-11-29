@@ -1,14 +1,13 @@
 package com.revature.employeereimbursementsystem.Controller;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
 import io.javalin.Javalin;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
 import com.revature.employeereimbursementsystem.Util.DTO.LoginCredentials;
 import io.javalin.http.Context;
-
 import java.util.List;
 
 public class EmployeeController {
@@ -36,17 +35,11 @@ public class EmployeeController {
         Employee employee = mapper.readValue(context.body(), Employee.class);
         employee = employeeService.registerEmployee(employee);
         if (employee == null) {
-            context.json("Username/email is already in use. Please register with an original username/email.");
+            context.json("Username or email is already in use. Please register with an original username or email.");
         } else {
             context.json("You are now registered into the ERS. Welcome.");
         }
     }
-
-    private void getAllEmployeesHandler(Context context) {
-        List<Employee> allEmployees = employeeService.getAllEmployees();
-        context.json(allEmployees);
-    }
-
 
     private void loginHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
@@ -81,6 +74,11 @@ public class EmployeeController {
             context.json("Your reimbursement ticket has been submitted.");
         }
 
+    }
+
+    private void getAllEmployeesHandler(Context context) {
+        List<Employee> allEmployees = employeeService.getAllEmployees();
+        context.json(allEmployees);
     }
 
 }

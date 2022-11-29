@@ -2,17 +2,12 @@ package com.revature.employeereimbursementsystem.Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.employeereimbursementsystem.DAO.EmployeeDAO;
-import com.revature.employeereimbursementsystem.DAO.TicketDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
 import com.revature.employeereimbursementsystem.Service.EmployeeService;
-import com.revature.employeereimbursementsystem.Service.TicketService;
 import com.revature.employeereimbursementsystem.Util.DTO.TicketDTO;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import org.eclipse.jetty.util.DateCache;
-
 import java.util.List;
 
 public class TicketController {
@@ -37,8 +32,6 @@ public class TicketController {
         app.get("DeniedEmployeeTickets", this::viewDeniedEmployeeTickets);
 
     }
-
-
 
     private void viewEmployeeTicketsHandler(Context context) {
         if (employeeService.getSessionEmployee() != null) {
@@ -81,8 +74,6 @@ public class TicketController {
             context.json("Please log in to your account to view your denied reimbursement tickets.");
         }
     }
-
-
 
 
     private void viewPendingTicketsHandler(Context context) {
