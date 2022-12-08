@@ -5,12 +5,21 @@ import com.revature.employeereimbursementsystem.DAO.TicketDAO;
 import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Model.Ticket;
 import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.List;
+
+// business logic is performed here.
+// holds session information.
+// checks incoming information and validates based on the business needs.
 
 public class EmployeeService {
     private Employee sessionEmployee = null;
     private final EmployeeDAO employeeDAO;
     private final TicketDAO ticketDAO;
+
+    private Logger logger = LogManager.getLogger();
 
     public EmployeeService(EmployeeDAO employeeDAO, TicketDAO ticketDAO) {
         this.employeeDAO = employeeDAO;
@@ -25,31 +34,17 @@ public class EmployeeService {
         this.sessionEmployee = employee;
     }
 
+    public List<Employee> getAllEmployees(){
+        return employeeDAO.findAll();
+    }
+
     public Employee registerEmployee(Employee employee) {
         return employeeDAO.create(employee);
     }
 
 
-    public int login(Employee employee) {
-        int temp = 0;
-        try {
-            String username = employee.getEmployeeUsername();
-            String password = employee.getPassword();
-            Employee authenticated = employeeDAO.loginCheck(username, password);
-
-            if (authenticated != null) {
-                this.setSessionEmployee(authenticated);
-                temp = 1;
-            }
-
-        } catch (InvalidEmployeeInputException e) {
-            e.printStackTrace();
-            temp = 2;
-        }
-        return temp;
-    }
-    public List<Employee> getAllEmployees() {
-        return employeeDAO.findAll();
+    public Employee login(String employeeUsername, String password) {
+        return employeeDAO.loginCheck(employeeUsername, password);
     }
 
 

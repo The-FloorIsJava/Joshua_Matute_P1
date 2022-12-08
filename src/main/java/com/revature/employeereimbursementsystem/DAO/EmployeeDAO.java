@@ -4,6 +4,8 @@ import com.revature.employeereimbursementsystem.Model.Employee;
 import com.revature.employeereimbursementsystem.Util.ConnectionFactory;
 import com.revature.employeereimbursementsystem.Util.Exceptions.InvalidEmployeeInputException;
 import com.revature.employeereimbursementsystem.Util.Interface.Crudable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,18 +16,17 @@ import java.util.List;
  */
 
 public class EmployeeDAO implements Crudable<Employee> {
-
+    private Logger logger = LogManager.getLogger();
     /*
      this Employee create method instantiates a newEmployee to bridge the connection between Javalin, the SQL employee
      database and Java.
      */
-
     @Override
     public Employee create(Employee newEmployee) {
 
         try (Connection connection = ConnectionFactory.getConnectionFactory().getConnection()) {
 
-            String sql = "INSERT INTO employee (employee_username, employee_email, employee_role, employee_pwd) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO employee (employee_username, employee_email, employee_role, employee_pwd, employee_rank) VALUES (?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -33,12 +34,15 @@ public class EmployeeDAO implements Crudable<Employee> {
             preparedStatement.setString(2, newEmployee.getEmployeeEmail());
             preparedStatement.setBoolean(3, newEmployee.employeeRole());
             preparedStatement.setString(4, newEmployee.getPassword());
+            preparedStatement.setString(5,newEmployee.getRank());
 
             int checkInsert = preparedStatement.executeUpdate();
 
             if (checkInsert == 0) {
+                logger.warn("Information was not able to be persisted. {}", newEmployee);
                 throw new RuntimeException("Employee was not added to database");
             }
+            logger.info("New employee with info {} was persisted to the database.");
             return newEmployee;
 
         } catch (Exception e) {
@@ -108,6 +112,7 @@ public class EmployeeDAO implements Crudable<Employee> {
         employee.setEmployeeEmail(resultSet.getString("employee_email"));
         employee.setPassword(resultSet.getString("employee_pwd"));
         employee.setEmployeeRole(resultSet.getBoolean("employee_role"));
+        employee.setRank(resultSet.getString("employee_rank"));
 
         return employee;
     }
